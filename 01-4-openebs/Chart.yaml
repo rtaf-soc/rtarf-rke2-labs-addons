@@ -1,0 +1,11 @@
+apiVersion: v2
+name: helm-local-openebs
+version: 1.0.0
+appVersion: 1.23.0
+description: A Helm chart wrapper for OpenEBS
+
+dependencies:
+  - name: openebs
+    version: 3.10.0
+    repository: "https://openebs.github.io/charts"
+    condition: openebs.enabled

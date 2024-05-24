@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<EPOevent>
+  <MachineInfo>
+    <MachineName>AMM</MachineName>
+    <AgentGUID>{a9039fa7-4237-43bc-8e33-f439e22deda4}</AgentGUID>
+    <IPAddress>10.133.35.133</IPAddress>
+    <OSName>Windows 7</OSName>
+    <UserName>SYSTEM</UserName>
+    <TimeZoneBias>-420</TimeZoneBias>
+    <RawMACAddress>dc4a3e941472</RawMACAddress>
+  </MachineInfo>
+  <SoftwareInfo ProductName="Trellix Endpoint Security" ProductVersion="10.7.0.5200" ProductFamily="TVD">
+    <CommonFields>
+      <Analyzer>ENDP_AM_1070</Analyzer>
+      <AnalyzerName>Trellix Endpoint Security</AnalyzerName>
+      <AnalyzerVersion>10.7.0.5200</AnalyzerVersion>
+      <AnalyzerHostName>AMM</AnalyzerHostName>
+      <AnalyzerEngineVersion>6600.9927</AnalyzerEngineVersion>
+      <AnalyzerDetectionMethod>On-Access Scan</AnalyzerDetectionMethod>
+      <AnalyzerDATVersion>5412.0</AnalyzerDATVersion>
+    </CommonFields>
+    <Event>
+      <EventID>1027</EventID>
+      <Severity>3</Severity>
+      <GMTTime>2024-01-22T08:33:58</GMTTime>
+      <CommonFields>
+        <ThreatCategory>av.detect</ThreatCategory>
+        <ThreatEventID>1027</ThreatEventID>
+        <ThreatSeverity>2</ThreatSeverity>
+        <ThreatName>W32/Rontokbro.b@MM</ThreatName>
+        <ThreatType>virus</ThreatType>
+        <DetectedUTC>2024-01-22T08:33:58Z</DetectedUTC>
+        <ThreatActionTaken>IDS_ALERT_ACT_TAK_DEL</ThreatActionTaken>
+        <ThreatHandled>True</ThreatHandled>
+        <SourceHostName>AMM</SourceHostName>
+        <SourceIPV4>10.133.35.169</SourceIPV4>
+        <SourceProcessName>SYSTEM</SourceProcessName>
+        <TargetHostName>AMM</TargetHostName>
+        <TargetUserName>NT AUTHORITY\SYSTEM</TargetUserName>
+        <TargetFileName>C:\Users\Public\Recorded TV\Sample Media\Sample Media.exe</TargetFileName>
+      </CommonFields>
+      <CustomFields target="EPExtendedEventMT">
+        <BladeName>IDS_BLADE_NAME_SPB</BladeName>
+        <AnalyzerContentCreationDate>2024-01-21T09:11:00Z</AnalyzerContentCreationDate>
+        <AnalyzerGTIQuery>False</AnalyzerGTIQuery>
+        <ThreatDetectedOnCreation>True</ThreatDetectedOnCreation>
+        <TargetName>Sample Media.exe</TargetName>
+        <TargetPath>C:\Users\Public\Recorded TV\Sample Media</TargetPath>
+        <TargetHash>902792c0116adf49f55f111e82c81db0</TargetHash>
+        <TargetFileSize>81920</TargetFileSize>
+        <TargetModifyTime>2004-11-20T08:44:22Z</TargetModifyTime>
+        <TargetAccessTime>2019-01-09T17:00:00Z</TargetAccessTime>
+        <TargetCreateTime>2016-03-18T06:02:00Z</TargetCreateTime>
+        <Cleanable>True</Cleanable>
+        <TaskName>IDS_OAS_TASK_NAME</TaskName>
+        <FirstAttemptedAction>IDS_ALERT_ACT_TAK_WBD</FirstAttemptedAction>
+        <FirstActionStatus>True</FirstActionStatus>
+        <SecondAttemptedAction>IDS_NOTAPPLICABLE</SecondAttemptedAction>
+        <AttackVectorType>4</AttackVectorType>
+        <DurationBeforeDetection>247631518</DurationBeforeDetection>
+        <NaturalLangDescription>IDS_NATURAL_LANG_OAS_DETECTION_DEL|TargetName=Sample Media.exe|TargetPath=C:\Users\Public\Recorded TV\Sample Media|ThreatName=W32/Rontokbro.b@MM|SourceProcessName=SYSTEM|ThreatType=virus|TargetUserName=NT AUTHORITY\SYSTEM</NaturalLangDescription>
+        <AccessRequested/>
+        <DetectionMessage>IDS_OAS_DEFAULT_THREAT_MESSAGE</DetectionMessage>
+        <AMCoreContentVersion>5412.0</AMCoreContentVersion>
+      </CustomFields>
+    </Event>
+  </SoftwareInfo>
+</EPOevent>

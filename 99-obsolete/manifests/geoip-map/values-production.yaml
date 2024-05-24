@@ -1,0 +1,29 @@
+domain: geoip-map.rtarf-ads.its-software-services.com
+domain2: geoip-map.rtarf-prod.its-software-services.com
+
+geoip-attack-map:
+  attack-map-feeder:
+    pods:
+      replicas: 1
+      image:
+        tag: "develop-622c304" #"v1.0.3"
+
+  attack-map-server:
+    pods:
+      replicas: 3
+      image:
+        tag: "develop-622c304" #"v1.0.3"
+
+    ingress:
+      service:
+        name: geoip-map-production-attack-map-server  
+      hosts:
+        - geoip-map.rtarf-ads.its-software-services.com
+        - geoip-map.rtarf-prod.its-software-services.com
+      tls:
+        - hosts:
+            - geoip-map.rtarf-ads.its-software-services.com
+          secretName: geoip-map-cert
+        - hosts:
+            - geoip-map.rtarf-prod.its-software-services.com
+          secretName: geoip-map-cert-legacy

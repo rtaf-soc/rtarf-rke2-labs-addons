@@ -1,0 +1,66 @@
+domain: grafana-ads.rtarf-ads.its-software-services.com
+domain2: grafana-soc.rtarf-prod.its-software-services.com
+
+grafana:
+  enabled: true
+
+  image:
+    tag: "9.1.5"
+
+  admin:
+    existingSecret: "grafana-credentials"
+    userKey: GRAFANA_USER
+    passwordKey: GRAFANA_PASSWORD
+
+  fullnameOverride: grafana-ads
+  envRenderSecret: {}
+  envFromSecrets:
+    - name: es-ads-basic-authen
+      optional: false
+
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: ES-SOC
+        type: elasticsearch
+        access: Server
+        url: https://es-ads-es-http.es-ads.svc.cluster.local:9200
+        basicAuth: true
+        basicAuthUser: ${username}
+        database: "rtarf-events-soc-*"
+        jsonData:
+          interval: null
+          timeField: '@timestamp'
+          esVersion: '8.0.0'
+          tlsSkipVerify: true
+          tlsAuthWithCACert: false
+          timeout: "3600" #60 min          
+        secureJsonData:
+          basicAuthPassword: ${password}
+
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'ADS'
+        orgId: 1
+        folder: 'ADS'
+        folderUid: ''
+        type: file
+        options:
+          path: /var/lib/grafana/dashboards
+
+  dashboardsConfigMaps:
+    cm-log-summary-1: cm-log-summary-1
+
+  grafana.ini:
+    #feature_toggles:
+    #  enable: disableEnvelopeEncryption
+    log:
+      level: debug
+    server:
+      root_url: https://grafana-ads.rtarf-es.its-software-services.com
+      domain: grafana-ads.rtarf-es.its-software-services.com
+    auth.ldap: 
+      enabled: true

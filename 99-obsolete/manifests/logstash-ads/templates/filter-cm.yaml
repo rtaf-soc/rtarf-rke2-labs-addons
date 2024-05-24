@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ruby-filter-cm
+  annotations:
+    checksum/config1: {{ .Files.Get "scripts/etl.rb" | sha256sum }}
+    checksum/config2: {{ .Files.Get "scripts/sigma.rb" | sha256sum }}
+data:
+  etl.rb: |-
+{{ .Files.Get "scripts/etl.rb" |  indent 4 }}
+  sigma.rb: |-
+{{ .Files.Get "scripts/sigma.rb" |  indent 4 }}

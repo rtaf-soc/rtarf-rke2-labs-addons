@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: beat-filter-cm
+  annotations:
+    checksum/config1: {{ .Files.Get "scripts/beat.rb" | sha256sum }}
+data:
+  beat.rb: |-
+{{ .Files.Get "scripts/beat.rb" |  indent 4 }}

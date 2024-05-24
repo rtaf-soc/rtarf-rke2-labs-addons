@@ -1,0 +1,116 @@
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  labels:
+    app: minio
+  name: minio-ads
+spec:
+  buckets:
+    - name: "ads-for-ml"
+  users:
+    - name: "minio-ads-user"
+  credsSecret:
+    name: tenant-secret-ads
+  configuration:
+    name: minio-ads-secret-env
+  features:
+    bucketDNS: false
+  image: quay.io/minio/minio:RELEASE.2022-05-26T05-48-41Z
+  imagePullPolicy: IfNotPresent
+  log:
+    affinity:
+      nodeAffinity: {}
+      podAffinity: {}
+      podAntiAffinity: {}
+    audit:
+      diskCapacityGB: 1
+    db:
+      affinity:
+        nodeAffinity: {}
+        podAffinity: {}
+        podAntiAffinity: {}
+      image: ""
+      initimage: ""
+      securityContext:
+        fsGroup: 999
+        runAsGroup: 999
+        runAsNonRoot: true
+        runAsUser: 999
+      serviceAccountName: ""
+      tolerations: []
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 5Gi
+    image: ""
+    securityContext:
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+    serviceAccountName: ""
+    tolerations: []
+  logging:
+    anonymous: true
+    json: true
+    quiet: true
+  mountPath: /export
+  podManagementPolicy: Parallel
+  pools:
+  - name: pool-0
+    servers: {{ .Values.tenant.pool0ServerInPool }}
+    volumeClaimTemplate:
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.tenant.pool0DiskSizePerVolume }}
+    volumesPerServer: {{ .Values.tenant.pool0VolumesPerServer }}
+  - name: pool-1
+    servers: {{ .Values.tenant.pool1ServerInPool }}
+    volumeClaimTemplate:
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.tenant.pool1DiskSizePerVolume }}
+    volumesPerServer: {{ .Values.tenant.pool1VolumesPerServer }}
+  - name: pool-2
+    servers: {{ .Values.tenant.pool2ServerInPool }}
+    volumeClaimTemplate:
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.tenant.pool2DiskSizePerVolume }}
+    volumesPerServer: {{ .Values.tenant.pool2VolumesPerServer }}
+  prometheus:
+    affinity:
+      nodeAffinity: {}
+      podAffinity: {}
+      podAntiAffinity: {}
+    diskCapacityGB: 1
+    image: ""
+    initimage: ""
+    securityContext:
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+    serviceAccountName: ""
+    sidecarimage: ""
+  prometheusOperator: false
+  requestAutoCert: true
+  subPath: /data

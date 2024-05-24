@@ -1,0 +1,24 @@
+{
+    "results": [
+        {
+            "subject": "supervised_dst_country_anomaly",
+            "result": "true",
+            "certainty": 0.99
+        },
+        {
+            "subject": "supervised_login_anomaly",
+            "result": "true",
+            "certainty": 1.00
+        },
+        {
+            "subject": "unsupervised_dst_country_anomaly",
+            "result": "true",
+            "certainty": 0.99
+        },
+        {
+            "subject": "unsupervised_login_anomaly",
+            "result": "true",
+            "certainty": 0.99
+        }
+    ]
+}

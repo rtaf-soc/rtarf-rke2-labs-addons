@@ -1,0 +1,1 @@
+<116>Jan 23 19:24:42 SyslogAlertForwarder: MIS_IPS9100 detected Outbound attack P2P: BitTorrent File Transfer HandShaking (severity = Medium). 10.104.121.67:56752 -> 171.97.169.58:51001 (result = Attack Blocked)

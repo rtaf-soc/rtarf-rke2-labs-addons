@@ -1,0 +1,39 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wazuh-cert-legacy
+  namespace: wazuh
+spec:
+  secretName: wazuh-cert-legacy
+  dnsNames:
+    - wazuh-web.rtarf-prod.its-software-services.com
+  issuerRef:
+    name: lets-encrypt-issuer-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wazuh-ing-legacy
+  namespace: wazuh
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600" #60 min
+spec:
+  tls:
+    - hosts:
+      - wazuh-web.rtarf-prod.its-software-services.com
+      secretName: wazuh-cert-legacy
+  rules:
+    - host: wazuh-web.rtarf-prod.its-software-services.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-nodeport
+                port:
+                  number: 443
