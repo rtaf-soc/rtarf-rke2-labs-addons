@@ -1,0 +1,5 @@
+strimzi-kafka-operator:
+  watchAnyNamespace: true
+  extraEnvs:
+    - name: STRIMZI_LABELS_EXCLUSION_PATTERN
+      value: "argocd.argoproj.io/instance"

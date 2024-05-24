@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: geoip-map
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          custom: "true"
+  template:
+    metadata:
+      name: 'geoip-map-{{name}}'
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/rtaf-soc/rtarf-rke2-labs-addons.git
+        targetRevision: "{{name}}" #Based on environment
+        path: '03-argocd-apps/manifests/geoip-map'
+        helm:
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - values.yaml
+            - values-{{name}}.yaml
+      destination:
+        name: in-cluster
+        namespace: geoip-map
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - CreateNamespace=true

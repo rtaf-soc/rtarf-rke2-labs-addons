@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kafka-ads
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          custom: "true"
+  template:
+    metadata:
+      name: 'kafka-ads-{{name}}'
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/rtaf-soc/rtarf-rke2-labs-addons.git
+        targetRevision: "{{name}}" #Based on environment
+        path: '03-argocd-apps/manifests/kafka-ads'
+      destination:
+        name: in-cluster
+        namespace: kafka-ads
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - CreateNamespace=true

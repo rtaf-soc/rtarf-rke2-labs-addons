@@ -1,0 +1,15 @@
+apiVersion: v2
+name: helm-geoip-map
+description: A Helm chart for GeoIP Attack Map
+
+type: application
+
+version: 1.0.0
+
+appVersion: "1.0"
+
+dependencies:
+  - name: geoip-attack-map
+    version: "1.0.1"
+    repository: "https://its-software-services-devops.github.io/geoip-attack-map/"
+    condition: geoip-attack-map.enabled

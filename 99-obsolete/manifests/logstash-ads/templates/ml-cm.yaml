@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ml-filter-cm
+  annotations:
+    checksum/config1: {{ .Files.Get "scripts/ml.rb" | sha256sum }}
+data:
+  ml.rb: |-
+{{ .Files.Get "scripts/ml.rb" |  indent 4 }}

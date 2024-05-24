@@ -1,0 +1,18 @@
+domain: minio.rtarf-ads.its-software-services.com
+domain2: minio-api.rtarf-ads.its-software-services.com
+
+domainLegacy: minio-soc.rtarf-prod.its-software-services.com
+domain2Legacy: minio.rtarf-prod.its-software-services.com
+
+tenant:
+  pool0ServerInPool: 2
+  pool0VolumesPerServer: 2
+  pool0DiskSizePerVolume: 20Gi
+
+  pool1ServerInPool: 2
+  pool1VolumesPerServer: 2
+  pool1DiskSizePerVolume: 20Gi
+
+  pool2ServerInPool: 2
+  pool2VolumesPerServer: 2
+  pool2DiskSizePerVolume: 20Gi

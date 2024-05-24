@@ -1,0 +1,45 @@
+domain: 'kafka-ui.rtarf-ads.its-software-services.com'
+domain2: 'kafka-ui.rtarf-prod.its-software-services.com'
+
+cluster:
+  name: kafka-ads
+  kafka:
+    diskSize: 250Gi
+    replicas: 5
+  zooKeeper:
+    diskSize: 100Gi
+    replicas: 3
+topics:
+  topic1:
+    name: kafka-ads-topic
+    cluster: kafka-ads
+    partitions: 15
+    replicas: 1
+    config:
+      retention.ms: 72000000
+      segment.bytes: 1073741824
+  topic2:
+    name: kafka-ads-topic-child
+    cluster: kafka-ads
+    partitions: 5
+    replicas: 1
+    config:
+      retention.ms: 7200000
+      segment.bytes: 1073741824
+users:
+  forui:
+    name: kafka-ui
+    cluster: kafka-ads
+
+kafka-ui:
+  enabled: true
+  fullnameOverride: kafka-ui
+  envs:
+    config:
+      KAFKA_CLUSTERS_0_NAME: kafka-ads
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-ads-kafka-bootstrap:9092
+      #KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: SCRAM-SHA-512
+      #KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_PLAINTEXT
+      KAFKA_CLUSTERS_0_READONLY: "false"
+      AUTH_TYPE: "DISABLED"
+      SECURITY_BASIC_ENABLED: "true"

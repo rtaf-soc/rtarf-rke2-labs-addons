@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ruby-config-cm
+  annotations:
+    checksum/config1: {{ .Files.Get "configs/fields-map.cfg" | sha256sum }}
+    checksum/config2: {{ .Files.Get "configs/watchlist-ip.cfg" | sha256sum }}
+    checksum/config3: {{ .Files.Get "configs/watchlist-url.cfg" | sha256sum }}
+    checksum/config4: {{ .Files.Get "configs/watchlist-hash.cfg" | sha256sum }}
+data:
+  fields-map.cfg: |-
+{{ .Files.Get "configs/fields-map.cfg" |  indent 4 }}
+  cidr-map.cfg: |-
+{{ .Files.Get "configs/cidr-map.cfg" |  indent 4 }}
+  es-template.json: |-
+{{ .Files.Get "configs/es-template.json" |  indent 4 }}
+  bruteforce.cfg: |-
+{{ .Files.Get "configs/bruteforce.cfg" |  indent 4 }}
+  watchlist-ip.cfg: |-
+{{ .Files.Get "configs/watchlist-ip.cfg" |  indent 4 }}
+  watchlist-url.cfg: |-
+{{ .Files.Get "configs/watchlist-url.cfg" |  indent 4 }}
+  watchlist-hash.cfg: |-
+{{ .Files.Get "configs/watchlist-hash.cfg" |  indent 4 }}
+  watchlist-domain.cfg: |-
+{{ .Files.Get "configs/watchlist-domain.cfg" |  indent 4 }}

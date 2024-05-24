@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: es-ads
+spec:
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          custom: "true"
+  template:
+    metadata:
+      name: 'es-ads-{{name}}'
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/rtaf-soc/rtarf-rke2-labs-addons.git
+        targetRevision: "{{name}}" #Based on environment
+        path: '03-argocd-apps/manifests/es-ads'
+      destination:
+        name: in-cluster
+        namespace: es-ads
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - CreateNamespace=true

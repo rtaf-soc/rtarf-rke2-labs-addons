@@ -1,0 +1,19 @@
+        s3 {
+          access_key_id => "${MINIO_ACCESS_KEY}"
+          secret_access_key => "${MINIO_SECRET_KEY}"
+          endpoint => "https://minio.minio-soc.svc.cluster.local"
+          bucket => "rtarf-ml"
+
+          # 10 MB
+          size_file => 10485760
+
+          time_file => 5
+          codec => "json_lines"
+          canned_acl => "authenticated-read"
+          additional_settings => {
+            "force_path_style" => true
+            "ssl_verify_peer" => false
+          }
+
+          prefix => "%{+YYYY-MM-dd}"
+        }

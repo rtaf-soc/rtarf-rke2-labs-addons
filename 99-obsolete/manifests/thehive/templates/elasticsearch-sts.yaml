@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+spec:
+  serviceName: elasticsearch
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      terminationGracePeriodSeconds: 1800
+      initContainers:
+        - name: init
+          image: debian:stable-slim
+          command:
+            - bash
+            - "-c"
+            - "mkdir -p /usr/share/elasticsearch/data && chmod -R 777 /usr/share/elasticsearch/data"
+          volumeMounts:
+            - name: es-data
+              mountPath: /usr/share/elasticsearch/data
+      containers:
+        - name: elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.17.12
+          ports:
+            - containerPort: 9200
+              name: http
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1500Mi
+            requests:
+              cpu: "500m"
+              memory: 1000Mi
+          env:
+            - name: "node.name"
+              value: es
+            - name: "cluster.name"
+              value: es-docker-cluster
+            - name: "discovery.type"
+              value: single-node
+            - name: "bootstrap.memory_lock"
+              value: "true"
+            - name: ES_JAVA_OPTS
+              value: "-Xms1024m -Xmx1024m"
+            - name: "xpack.security.enabled"
+              value: "false"
+          volumeMounts:
+            - name: es-data
+              mountPath: /usr/share/elasticsearch/data
+
+  volumeClaimTemplates:
+  - metadata:
+      name: es-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

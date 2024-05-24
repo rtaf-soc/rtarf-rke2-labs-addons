@@ -1,0 +1,114 @@
+PUT _ilm/policy/rtarf-policy
+{
+    "policy": {
+        "phases": {
+            "delete": {
+                "min_age": "1d",
+                "actions": {
+                    "delete": {}
+                }
+            }
+        }
+    }
+}
+
+#======
+
+PUT _index_template/rtarf-events-soc
+{
+  "index_patterns": ["rtarf-events-soc-*"],
+  "template": {
+    "mappings": {
+      "properties": {
+        "message": {
+          "type": "object",
+          "enabled": false
+        },
+        "ads_ip_src": {
+          "type": "ip",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ads_ip_dst": {
+          "type": "ip",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ads_ref_key": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 20
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      "number_of_shards": 1,
+      "refresh_interval" : "30s",
+      "codec": "best_compression",
+      "number_of_replicas" : 0,
+      "auto_expand_replicas": false
+    }
+  },
+  "priority": 0
+}
+
+
+#======
+
+PUT _index_template/ads-child-template
+{
+  "index_patterns": ["ads-child-*"],
+  "template": {
+    "mappings": {
+      "properties": {
+        "message": {
+          "type": "object",
+          "enabled": false
+        },
+        "ads_ip_src": {
+          "type": "ip",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ads_ip_dst": {
+          "type": "ip",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "ads_ref_key": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 20
+            }
+          }
+        }
+      }
+    },
+    "settings": {
+      "number_of_shards": 1,
+      "refresh_interval" : "30s",
+      "codec": "best_compression",
+      "number_of_replicas" : 0,
+      "auto_expand_replicas": false
+    }
+  },
+  "priority": 0
+}

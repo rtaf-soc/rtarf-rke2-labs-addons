@@ -1,0 +1,37 @@
+geoip-attack-map:
+  attack-map-server:
+    podDisruptionBudget:
+      enabled: false
+    pods:
+      env:
+        - name: GEOIP_MAPBOX_TOKEN
+          value: "pk.eyJ1IjoibG9iaW5ob2RlIiwiYSI6ImNsMWxpMndoZjA4cm0zaWtodDdhdmloaGYifQ.xCokQhUuc4BoyeM90TIc6w"
+
+        - name: GEOIP_IMAGE_PATH
+          value: "https://raw.githubusercontent.com/rtaf-soc/rtarf-public-artifacts/main/logocyberB.png"
+
+    ingress:
+      enabled: true
+      service:
+        port:
+          name: http
+
+  attack-map-feeder:
+    podDisruptionBudget:
+      enabled: false
+    pods:
+      env:
+        - name: GEOIP_HQ_IP
+          value: "203.113.10.99"
+
+  redis:
+    master:
+      persistence:
+        storageClass: openebs-hostpath
+
+    commonConfiguration: |-
+      client-output-buffer-limit "pubsub 256mb 128mb 30"
+      # Enable AOF https://redis.io/topics/persistence#append-only-file
+      appendonly yes
+      # Disable RDB persistence, AOF persistence already enabled.
+      save ""

@@ -1,0 +1,5 @@
+---
+eck-operator:
+  installCRDs: true
+  webhook:
+    enabled: false

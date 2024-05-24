@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: es-ads-es-http-np
+spec:
+  type: NodePort
+  ports:
+  - name: https
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+    nodePort: 31200
+  selector:
+    common.k8s.elastic.co/type: elasticsearch
+    elasticsearch.k8s.elastic.co/cluster-name: es-ads

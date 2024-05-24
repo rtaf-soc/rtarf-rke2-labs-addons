@@ -1,0 +1,11 @@
+cert-manager:
+  enabled: true
+  global:
+    leaderElection:
+      namespace: cert-manager
+
+  installCRDs: true
+  fullnameOverride: cert-manager
+  extraArgs:
+    - --dns01-recursive-nameservers-only=true
+    - --dns01-recursive-nameservers=10.141.98.2:53 # RTARF Internal DNS

@@ -1,0 +1,17 @@
+apiVersion: v2
+name: helm-minio-operator
+description: A Helm chart for minio operator
+
+type: application
+
+version: 1.0.0
+
+appVersion: "1.0"
+
+dependencies:
+  #### Start HIS API core ####
+  - name: "operator"
+    alias: operator
+    condition: operator.enabled
+    repository: "https://operator.min.io/"
+    version: "4.4.28"

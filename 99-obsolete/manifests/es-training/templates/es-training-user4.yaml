@@ -1,0 +1,26 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: es-training-user4
+spec:
+  refreshInterval: 1m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: k8s-secret-store      # name of the SecretStore (or kind specified)
+  target:
+    name: es-training-user4     # name of the k8s Secret to be created
+  data:
+  - secretKey: username
+    remoteRef:
+      key: initial-secret
+      property: ES_USER_TRAINING4
+
+  - secretKey: password
+    remoteRef:
+      key: initial-secret
+      property: ES_PASSWORD_TRAINING4
+
+  - secretKey: roles
+    remoteRef:
+      key: initial-secret
+      property: ES_ROLE_TRAINING4

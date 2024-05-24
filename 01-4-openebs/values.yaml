@@ -1,0 +1,9 @@
+openebs:
+  enabled: true
+  nameOverride: "openebs"
+  fullnameOverride: "openebs"
+
+  localprovisioner:
+    hostpathClass:
+      isDefaultClass: true
+    basePath: "/data"

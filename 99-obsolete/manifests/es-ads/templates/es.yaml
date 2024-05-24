@@ -1,0 +1,97 @@
+---
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: es-ads
+spec:
+  version: 8.3.3
+  nodeSets:
+  - name: masters
+    count: 3
+    podTemplate:
+      spec:
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=262144']
+        containers:
+        - name: elasticsearch
+          env:
+          - name: ES_JAVA_OPTS
+            value: -Xms2g -Xmx2g
+          resources:
+            requests:
+              memory: 4Gi
+              cpu: 4
+            limits:
+              memory: 8Gi
+    config:
+      node.store.allow_mmap: true
+      node.roles: ["master"]
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Gi
+        #storageClassName: longhorn
+  - name: data
+    count: 10
+    podTemplate:
+      spec:
+        initContainers:
+        - name: sysctl
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          command: ['sh', '-c', 'sysctl -w vm.max_map_count=562144']
+        containers:
+        - name: elasticsearch
+          env:
+          - name: ES_JAVA_OPTS
+            value: -Xms2g -Xmx2g
+          resources:
+            requests:
+              memory: 4Gi
+              cpu: 4
+            limits:
+              memory: 8Gi
+              cpu: 8
+    config:
+      node.store.allow_mmap: true
+      node.roles: ["data"]
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Ti
+  auth:
+    fileRealm:
+    - secretName: es-ads-basic-authen
+    - secretName: es-ads-basic-authen-legacy
+    - secretName: es-ads-basic-authen-viewer
+    #- secretName: es-training-user1
+    #- secretName: es-training-user2
+    #- secretName: es-training-user3
+    #- secretName: es-training-user4
+---
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: es-ads
+spec:
+  version: 8.3.3
+  count: 1
+  elasticsearchRef:
+    name: es-ads
+  config:
+    monitoring.ui.ccs.enabled: false
