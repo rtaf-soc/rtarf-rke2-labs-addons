@@ -1491,24 +1491,24 @@ def filter(event)
         validate_protocol(event, 'ads_L7_protocol')
         validate_host(event, 'ads_host')
 
-        load_misp_cahce(event, @mc, 'ads_dst_ip', 'ip-dst', 'ads_alert_by_dstip')
-        load_misp_cahce(event, @mc, 'ads_src_ip', 'ip-src', 'ads_alert_by_srcip')
-        load_misp_cahce(event, @mc, 'ads_host', 'domain', 'ads_alert_by_domain')
-        load_misp_cahce(event, @mc, 'ads_url', 'url', 'ads_alert_by_url')
-        load_misp_cahce(event, @mc, 'ads_sha256', 'sha256', 'ads_alert_by_sha256_1')
-        load_misp_cahce(event, @mc, 'ads_sha256', 'filename|sha256', 'ads_alert_by_sha256_2')
+        #load_misp_cahce(event, @mc, 'ads_dst_ip', 'ip-dst', 'ads_alert_by_dstip')
+        #load_misp_cahce(event, @mc, 'ads_src_ip', 'ip-src', 'ads_alert_by_srcip')
+        #load_misp_cahce(event, @mc, 'ads_host', 'domain', 'ads_alert_by_domain')
+        #load_misp_cahce(event, @mc, 'ads_url', 'url', 'ads_alert_by_url')
+        #load_misp_cahce(event, @mc, 'ads_sha256', 'sha256', 'ads_alert_by_sha256_1')
+        #load_misp_cahce(event, @mc, 'ads_sha256', 'filename|sha256', 'ads_alert_by_sha256_2')
 
         misp_arr = ['ads_alert_by_dstip', 'ads_alert_by_srcip', 'ads_alert_by_domain']
-        determine_threat_level(event, misp_arr, 'ads_alert_by_misp')
+        #determine_threat_level(event, misp_arr, 'ads_alert_by_misp')
 
         event.set('ts_left_syslog', Time.now.to_i)
         populate_ts_aggregate(event)
 
-        populate_ml_labels(event)
-        get_ml_prediction(event, @mc, 'ml-error-cnt') # Will use it later
+        #populate_ml_labels(event)
+        #get_ml_prediction(event, @mc, 'ml-error-cnt') # Will use it later
 
         populate_original_ip(event)
-        validate_sigma_rules_phase1(event, @blacklist_map)
+        #validate_sigma_rules_phase1(event, @blacklist_map)
 
         final_manipulate(event)
 #    elsif (destination == 'loki')
@@ -1544,7 +1544,7 @@ def filter(event)
         calculate_delay_category(event)
         #add_alert_metadata(event)
 
-        validate_sigma_rules_phase2(event)
+        #validate_sigma_rules_phase2(event)
         create_metric(event)
     end
 
