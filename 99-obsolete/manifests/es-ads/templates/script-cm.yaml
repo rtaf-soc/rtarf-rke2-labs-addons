@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: script-cm
-  annotations:
-    checksum/config1: {{ .Files.Get "scripts/job.bash" | sha256sum }}
-data:
-  job.bash: |-
-{{ .Files.Get "scripts/job.bash" | indent 4 }}

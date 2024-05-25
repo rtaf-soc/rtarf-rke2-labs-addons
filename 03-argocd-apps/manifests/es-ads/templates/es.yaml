@@ -4,7 +4,7 @@ kind: Elasticsearch
 metadata:
   name: es-ads
 spec:
-  version: 8.3.3
+  version: 8.13.4
   nodeSets:
   - name: masters
     count: 3
@@ -41,7 +41,7 @@ spec:
             storage: 100Gi
         #storageClassName: longhorn
   - name: data
-    count: 10
+    count: 3
     podTemplate:
       spec:
         initContainers:
@@ -73,23 +73,17 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 2Ti
+            storage: 100Gi
   auth:
     fileRealm:
     - secretName: es-ads-basic-authen
-    - secretName: es-ads-basic-authen-legacy
-    - secretName: es-ads-basic-authen-viewer
-    #- secretName: es-training-user1
-    #- secretName: es-training-user2
-    #- secretName: es-training-user3
-    #- secretName: es-training-user4
 ---
 apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
   name: es-ads
 spec:
-  version: 8.3.3
+  version: 8.13.4
   count: 1
   elasticsearchRef:
     name: es-ads
