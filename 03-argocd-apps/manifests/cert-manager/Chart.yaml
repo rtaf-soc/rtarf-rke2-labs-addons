@@ -6,6 +6,6 @@ description: A Helm chart wrapper for Cert Manager
 
 dependencies:
   - name: cert-manager
-    version: "1.8.0"
+    version: "1.14.5"
     repository: "https://charts.jetstack.io"
     condition: cert-manager.enabled
