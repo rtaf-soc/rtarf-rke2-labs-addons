@@ -6,6 +6,6 @@ description: A Helm chart wrapper for External Secret
 
 dependencies:
   - name: external-secrets
-    version: "0.8.1"
+    version: "0.9.18"
     repository: "https://charts.external-secrets.io"
     condition: external-secrets.enabled
