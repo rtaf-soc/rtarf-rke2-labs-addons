@@ -9,7 +9,7 @@ logstash-syslog:
       memory: "2Gi"
 
   fullnameOverride: logstash-syslog #From Syslog to Kafka
-  replicas: 12
+  replicas: 5
   image: gcr.io/its-artifact-commons/logstash-loki
   imageTag: develop-3a0839b
 
@@ -33,7 +33,7 @@ logstash-syslog:
       value: "-Xmx256m -Xms256m"
 
     - name: DUMMY
-      value: "272" # DUMMY env for pod restarting, DO NOT REMOVE this comment
+      value: "000" # DUMMY env for pod restarting, DO NOT REMOVE this comment
 
     - name: CTI_RATE_LIMIT # Request/Sec
       value: "5" # Request/sec
@@ -104,7 +104,7 @@ logstash-es:
   antiAffinity: soft
 
   fullnameOverride: logstash-es #From kafka to ES
-  replicas: 15
+  replicas: 5
   image: gcr.io/its-artifact-commons/logstash-loki
   imageTag: develop-3a0839b
   resources:
@@ -126,7 +126,7 @@ logstash-es:
           name: es-ads-basic-authen
           key: password
     - name: DUMMY
-      value: "035"
+      value: "000"
     - name: POD_NAME
       valueFrom:
         fieldRef:
@@ -204,253 +204,6 @@ logstash-es:
           timeout => "0.5"
         }
       }
-
-###############################
-logstash-beat:
-  enabled: true
-  antiAffinity: soft
-
-  fullnameOverride: logstash-beat
-  replicas: 1
-  image: gcr.io/its-artifact-commons/logstash-loki
-  imageTag: develop-3a0839b
-
-  service:
-    type: NodePort
-    ports:
-    - port: 5044
-      #protocol: UDP
-      targetPort: 5044
-      nodePort: 30144
-
-  extraEnvs:
-    - name: LS_JAVA_OPTS
-      value: "-Xmx256m -Xms256m"
-
-    - name: DUMMY
-      value: "016"
-
-  logstashConfig:
-    logstash.yml: |
-      http.host: "0.0.0.0"
-      pipeline.ecs_compatibility: "disabled"
-
-  extraVolumeMounts:
-    - name: scripts
-      mountPath: /scripts/
-      readOnly: true
-
-  extraVolumes:
-    - name: scripts
-      configMap:
-        name: beat-filter-cm
-
-  logstashPipeline:
-    logstash.conf: |
-      input {
-        beats {
-          port => 5044
-        }
-      }
-
-      filter {
-        ruby {
-          path => "/scripts/beat.rb"
-          script_params => {}
-        }
-      }
-
-      output {
-        #stdout { codec => json_lines }
-
-        kafka {
-          bootstrap_servers => "kafka-ads-kafka-bootstrap.kafka-ads.svc.cluster.local:9092"
-          codec => json
-          topic_id => "kafka-ads-topic-beat"
-        }
-      }
-
-###############################
-logstash-ml:
-  enabled: true
-  antiAffinity: soft
-
-  fullnameOverride: logstash-ml #From kafka to MinIO
-  replicas: 0
-  image: gcr.io/its-artifact-commons/logstash-loki
-  imageTag: develop-3a0839b
-
-  resources:
-    requests:
-      cpu: "1"
-      memory: "1536Mi"
-    limits:
-      cpu: "2"
-      memory: "2536Mi"
-
-  extraEnvs:
-    - name: DUMMY
-      value: "027"
-
-    - name: MINIO_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio-ads-user
-          key: MINIO_ACCESS_KEY
-
-    - name: MINIO_SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio-ads-user
-          key: MINIO_SECRET_KEY
-
-  logstashConfig:
-    logstash.yml: |
-      http.host: "0.0.0.0"
-      pipeline.ecs_compatibility: "disabled"
-
-  extraVolumeMounts:
-    - name: scripts
-      mountPath: /scripts/
-      readOnly: true
-
-  extraVolumes:
-    - name: scripts
-      configMap:
-        name: ml-filter-cm
-
-  logstashPipeline:
-    logstash.conf: |
-      input {
-        kafka {
-          bootstrap_servers => "kafka-ads-kafka-bootstrap.kafka-ads.svc.cluster.local:9092"
-          group_id => "for-ml"
-          consumer_threads => 1
-          topics => ["kafka-ads-topic"]
-          codec => "json"
-          type => "log"
-          auto_offset_reset => "earliest"
-        }
-      }
-
-      filter {
-        ruby {
-          path => "/scripts/ml.rb"
-          script_params => {}
-        }
-
-        mutate {            
-          remove_field => ["message"]    
-        }
-
-        throttle {
-          before_count => -1
-          after_count => 100
-          period => 60
-          max_age => 120
-          key => "DUMMY"
-          add_tag => "drop"
-        }
-
-        if "drop" in [tags] {
-          drop { }
-        }
-
-        prune {
-          interpolate => true
-          whitelist_names => [ "@timestamp", "ads_category", "ads_country_dst", "ads_country_src", "ads_dst_port", "ads_ts_hh", "ads_ts_wd", "ads_user", "ads_ml_label_susp_dst_country", ads_ml_label_susp_time ]
-        }
-      }
-
-      output {
-        #stdout { codec => json_lines }
-
-        s3 {
-          access_key_id => "${MINIO_ACCESS_KEY}"
-          secret_access_key => "${MINIO_SECRET_KEY}"
-          endpoint => "https://minio.minio-ads.svc.cluster.local"
-          bucket => "ads-for-ml"
-
-          # 10 MB
-          size_file => 10485760
-
-          time_file => 5
-          codec => "json_lines"
-          canned_acl => "authenticated-read"
-          additional_settings => {
-            "force_path_style" => true
-            "ssl_verify_peer" => false
-          }
-
-          prefix => "%{+YYYY-MM-dd}.%{[ads_category]}"
-        }        
-      }
-
-
-###############################
-logstash-geoip:
-  enabled: true
-  antiAffinity: soft
-
-  fullnameOverride: logstash-geoip #From kafka to GeoIP map
-  replicas: 3
-  image: gcr.io/its-artifact-commons/logstash-loki
-  imageTag: develop-3a0839b
-  resources:
-    limits:
-      cpu: "3"
-      memory: "3Gi"
-  extraEnvs:
-    - name: DUMMY
-      value: "009"
-
-  logstashConfig:
-    logstash.yml: |
-      http.host: "0.0.0.0"
-      pipeline.ecs_compatibility: "disabled"
-
-  extraVolumeMounts:
-    - name: scripts
-      mountPath: /scripts/
-      readOnly: true
-
-  extraVolumes:
-    - name: scripts
-      configMap:
-        name: geoip-filter-cm
-
-  logstashPipeline:
-    logstash.conf: |
-      input {
-        kafka {
-          bootstrap_servers => "kafka-ads-kafka-bootstrap.kafka-ads.svc.cluster.local:9092"
-          group_id => "for-geoip-map"
-          consumer_threads => 1
-          topics => ["kafka-ads-topic"]
-          codec => "json"
-          type => "log"
-          auto_offset_reset => "earliest"
-        }
-      }
-
-      filter {
-        ruby {
-          path => "/scripts/geoip.rb"
-          script_params => {}
-        }
-      }
-
-      output {
-        #stdout { codec => json_lines }
-
-        syslog {
-          id => "geoip_attack_map"
-          host => "geoip-map-production-attack-map-feeder.geoip-map.svc.cluster.local"
-          port => 6514
-          protocol => "tcp"
-        }
-      }
-
 
 ###############################
 logstash-es-child:

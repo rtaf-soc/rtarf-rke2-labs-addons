@@ -37,24 +37,6 @@ dependencies:
     version: "7.17.3"
 
   - name: "logstash"
-    alias: logstash-ml
-    condition: logstash-ml.enabled
-    repository: "https://helm.elastic.co"
-    version: "7.17.3"
-
-  - name: "logstash"
-    alias: logstash-beat
-    condition: logstash-beat.enabled
-    repository: "https://helm.elastic.co"
-    version: "7.17.3"
-
-  - name: "logstash"
-    alias: logstash-geoip
-    condition: logstash-geoip.enabled
-    repository: "https://helm.elastic.co"
-    version: "7.17.3"
-
-  - name: "logstash"
     alias: logstash-es-child
     condition: logstash-es-child.enabled
     repository: "https://helm.elastic.co"
