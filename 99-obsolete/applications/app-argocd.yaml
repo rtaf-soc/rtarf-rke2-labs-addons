@@ -14,7 +14,7 @@ spec:
     spec:
       project: "default"
       source:
-        repoURL: https://github.com/rtaf-soc/rtarf-rke2-ads-addons
+        repoURL: https://github.com/rtaf-soc/rtarf-rke2-labs-addons
         targetRevision: "{{name}}" #Based on environment
         path: '03-argocd-apps/manifests/argocd'
         helm:
