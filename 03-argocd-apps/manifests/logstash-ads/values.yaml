@@ -9,7 +9,7 @@ logstash-syslog:
       memory: "2Gi"
 
   fullnameOverride: logstash-syslog #From Syslog to Kafka
-  replicas: 5
+  replicas: 3
   image: gcr.io/its-artifact-commons/logstash-loki
   imageTag: develop-3a0839b
 
@@ -33,7 +33,7 @@ logstash-syslog:
       value: "-Xmx256m -Xms256m"
 
     - name: DUMMY
-      value: "000" # DUMMY env for pod restarting, DO NOT REMOVE this comment
+      value: "001" # DUMMY env for pod restarting, DO NOT REMOVE this comment
 
     - name: CTI_RATE_LIMIT # Request/Sec
       value: "5" # Request/sec
@@ -104,7 +104,7 @@ logstash-es:
   antiAffinity: soft
 
   fullnameOverride: logstash-es #From kafka to ES
-  replicas: 5
+  replicas: 3
   image: gcr.io/its-artifact-commons/logstash-loki
   imageTag: develop-3a0839b
   resources:
@@ -126,7 +126,7 @@ logstash-es:
           name: es-ads-basic-authen
           key: password
     - name: DUMMY
-      value: "000"
+      value: "001"
     - name: POD_NAME
       valueFrom:
         fieldRef:
@@ -169,7 +169,7 @@ logstash-es:
       
       filter {
         ruby {
-          code => "event.set('destination', 'loki')"
+          code => "event.set('destination', 'elasticsearch')"
         }
 
         ruby {

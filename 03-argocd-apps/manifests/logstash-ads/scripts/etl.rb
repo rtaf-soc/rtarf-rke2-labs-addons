@@ -112,7 +112,7 @@ def register(params)
     @comm_id_seed = params.fetch("community_id_seed", "0").to_i
     # ###
 
-    load_malware_family_galaxies_cluster()
+    #load_malware_family_galaxies_cluster()
 end
 
 def load_brute_force_map(file_name)
@@ -1511,22 +1511,22 @@ def filter(event)
         validate_sigma_rules_phase1(event, @blacklist_map)
 
         final_manipulate(event)
-    elsif (destination == 'loki')
-        category = event.get('ads_category')
-        if (category == 'syslog_fw_traffic')
-            # Try to exclude it for now
-            return []
-        end
+#    elsif (destination == 'loki')
+#        category = event.get('ads_category')
+#        if (category == 'syslog_fw_traffic')
+#            # Try to exclude it for now
+#            return []
+#        end
 
-        event.set('ts_picked_from_kafka', Time.now.to_i)
-        event.set('pod_name_loki', ENV["POD_NAME"])
-        event.set('@timestamp', LogStash::Timestamp.now)
+#        event.set('ts_picked_from_kafka', Time.now.to_i)
+#        event.set('pod_name_loki', ENV["POD_NAME"])
+#        event.set('@timestamp', LogStash::Timestamp.now)
 
-        calculate_delay_category(event)
+#        calculate_delay_category(event)
         #add_alert_metadata(event)
 
-        validate_sigma_rules_phase2(event)
-        create_metric(event)
+#        validate_sigma_rules_phase2(event)
+#        create_metric(event)
     elsif (destination == 'elasticsearch')
         # This is the one for new ES cluster, select just only some categories
         # to make ES works not too hard
