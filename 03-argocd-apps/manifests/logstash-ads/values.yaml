@@ -233,7 +233,7 @@ logstash-es-child:
           name: es-ads-basic-authen
           key: password
     - name: DUMMY
-      value: "008"
+      value: "001"
     - name: POD_NAME
       valueFrom:
         fieldRef:

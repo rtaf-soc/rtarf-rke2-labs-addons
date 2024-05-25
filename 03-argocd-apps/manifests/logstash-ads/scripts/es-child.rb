@@ -11,7 +11,7 @@ MISP_KEY = 'j7QDoNn6Z4nrXZTupWWxsJU9kD3PuqqE4XJuYNvd'
 def register(params)
     $stdout.sync = true
 
-    load_mitr_attack_pattern()
+    #load_mitr_attack_pattern()
 end
 
 
