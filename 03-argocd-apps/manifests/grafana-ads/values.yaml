@@ -1,5 +1,4 @@
-domain: grafana-ads.rtarf-ads.its-software-services.com
-domain2: grafana-soc.rtarf-prod.its-software-services.com
+domain: grafana-ads.rtarf-labs.its-software-services.com
 
 grafana:
   enabled: true
@@ -60,7 +59,7 @@ grafana:
     log:
       level: debug
     server:
-      root_url: https://grafana-ads.rtarf-es.its-software-services.com
-      domain: grafana-ads.rtarf-es.its-software-services.com
+      root_url: https://grafana-ads.rtarf-labs.its-software-services.com
+      domain: grafana-ads.rtarf-labs.its-software-services.com
     auth.ldap: 
       enabled: true
