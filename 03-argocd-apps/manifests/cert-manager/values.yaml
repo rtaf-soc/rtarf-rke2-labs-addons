@@ -8,4 +8,4 @@ cert-manager:
   fullnameOverride: cert-manager
   extraArgs:
     - --dns01-recursive-nameservers-only=true
-    - --dns01-recursive-nameservers=10.141.98.2:53 # RTARF Internal DNS
+    - --dns01-recursive-nameservers=172.21.2.101:53 # RTARF Internal DNS
