@@ -1,22 +1,21 @@
-domain: 'kafka-ui.rtarf-ads.its-software-services.com'
-domain2: 'kafka-ui.rtarf-prod.its-software-services.com'
+domain: 'kafka-ui.rtarf-labs.its-software-services.com'
 
 cluster:
   name: kafka-ads
   kafka:
-    diskSize: 250Gi
-    replicas: 5
-  zooKeeper:
     diskSize: 100Gi
+    replicas: 3
+  zooKeeper:
+    diskSize: 50Gi
     replicas: 3
 topics:
   topic1:
     name: kafka-ads-topic
     cluster: kafka-ads
-    partitions: 15
+    partitions: 5
     replicas: 1
     config:
-      retention.ms: 72000000
+      retention.ms: 3600000
       segment.bytes: 1073741824
   topic2:
     name: kafka-ads-topic-child
@@ -24,7 +23,7 @@ topics:
     partitions: 5
     replicas: 1
     config:
-      retention.ms: 7200000
+      retention.ms: 3600000
       segment.bytes: 1073741824
 users:
   forui:
