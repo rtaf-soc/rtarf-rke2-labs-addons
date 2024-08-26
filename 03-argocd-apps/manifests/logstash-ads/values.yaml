@@ -33,7 +33,7 @@ logstash-syslog:
       value: "-Xmx256m -Xms256m"
 
     - name: DUMMY
-      value: "002" # DUMMY env for pod restarting, DO NOT REMOVE this comment
+      value: "003" # DUMMY env for pod restarting, DO NOT REMOVE this comment
 
     - name: CTI_RATE_LIMIT # Request/Sec
       value: "5" # Request/sec

@@ -633,11 +633,11 @@ def populate_category(event)
         log_group = 'syslog'
         category = audit_type
         event.set('ads_host', host)
-    elsif m = line.match(/^.*snort(.+)$/)
+    elsif m = line.match(/^snort(.+)$/)
         category = 'snort'
         log_group = 'snort'
         delimit = 'tab'
-    elsif m = line.match(/^.*suricata_log(.+)$/)
+    elsif m = line.match(/^suricata_log(.+)$/)
         category = 'snort'
         log_group = 'snort'
         delimit = 'tab'
